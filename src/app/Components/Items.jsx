@@ -99,7 +99,7 @@ class Tasks extends React.Component {
             <li className={"item list-group-item " + (task.checked ? 'crossed' : 'no-cross')} key={task.id}>
                         <div className=" promoted-checkbox">
               <input id={task.id} type="checkbox" className="promoted-input-checkbox" onClick={e=>
-              {this.handleMark(task.id, !task.checked)}} defaultChecked={task.checked}/>
+              {this.handleMark(task.id, !task.checked)}} checked={task.checked} onChange={e => {}}/>
               <label htmlFor={task.id}>
                 <svg>
                   <use xlinkHref='#checkmark' />

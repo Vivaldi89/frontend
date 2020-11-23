@@ -1,9 +1,10 @@
 import React from 'react';
+import './styles/Checkbox.css';
 import './styles/App.css';
 import TodoInput from "./app/Components/TodoInput";
 import Tasks from "./app/Components/Items";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './styles/Checkbox.css';
+
 
 
 function App() {

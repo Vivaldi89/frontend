@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { Input, Label } from 'reactstrap';
 
 class Tasks extends React.Component {
-  
+
     getUncheckedCounter() {
       return this.fetchData().filter((e) => e.checked === false).length
     }
@@ -38,7 +38,6 @@ class Tasks extends React.Component {
 
   
   render() {
-    console.log("render");
     let mode = this.props.state.mode || null
     let posts
     switch (mode) {

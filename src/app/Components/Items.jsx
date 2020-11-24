@@ -2,15 +2,12 @@ import React from 'react';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { getTasks, getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed }  from '../todoSlice';
+import { getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed }  from '../todoSlice';
 import { connect } from 'react-redux'
 import { Input, Label } from 'reactstrap';
 
 class Tasks extends React.Component {
-    getMode() {
-      return localStorage.getItem('mode')
-    }
-
+  
     getUncheckedCounter() {
       return this.fetchData().filter((e) => e.checked === false).length
     }
@@ -27,61 +24,28 @@ class Tasks extends React.Component {
         })
     }
 
-    componentDidMount() {
-      this.syncDB()
-    }
+    componentDidMount = () => this.syncDB()
 
-    handleMark = (id, check) => {
-      this.props.markAsChecked([id, check])
-      this.syncDB()
-    }
+    getMode() { return localStorage.getItem('mode') }
+    fetchData() { return this.props.state.tasks }
+    handleMark = (id, check) => this.props.markAsChecked([id, check])
+    handleRemove = (id) => this.props.remove(id)
+    handleClearCompleted = () => this.props.clearCompleted()
+    handleCheckAll = (b) => this.props.checkAll(b)
+    handleAll = () => this.props.all()
+    handleTodo = () => this.props.todo()
+    handleCompleted = () => this.props.completed()
 
-    handleRemove = (id) => {
-      this.props.remove(id)
-      this.syncDB()
-    }
-
-    handleAll = () => {
-      
-      this.props.all()
-      this.syncDB()
-    }
-
-    handleTodo = () => {
-      this.props.todo()
-      this.syncDB()
-    }
-    handleCompleted = () => {
-      this.props.completed()
-      this.syncDB()
-    }
-
-    fetchData() {
-      return this.props.state.tasks
-    }
-
-    getLocalState() {
-      return this.state.tasks
-    }
-
-    handleClearCompleted(){
-      this.props.clearCompleted()
-      this.syncDB()
-    }
-
-    handleCheckAll(b) {
-      this.props.checkAll(b)
-      this.syncDB()
-    }
   
   render() {
-    let mode = this.getMode() || null
+    console.log("render");
+    let mode = this.props.state.mode || null
     let posts
     switch (mode) {
-      case "1":
+      case 1:
         posts = this.fetchData().filter((e) => e.checked === false)
         break;
-      case "2":
+      case 2:
         posts = this.fetchData().filter((e) => e.checked === true)
         break;
       default:
@@ -137,8 +101,9 @@ class Tasks extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         state: state,
-        tasks: state.tasks
+        tasks: state.tasks,
+        mode: state.mode
     };
 }
 
-export default connect( mapStateToProps , {getTasks, getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed })(Tasks);
+export default connect( mapStateToProps , { getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed })(Tasks);

@@ -1,27 +1,20 @@
 import React from 'react';
-import './styles/Checkbox.css';
-import './styles/App.css';
-import TodoInput from "./app/Components/TodoInput";
-import Tasks from "./app/Components/Items";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
+import Main from "./app/Components/Todoapp";
+import Notfound from "./app/Components/notfound";
+import Testpage from "./app/Components/Testpage";
+import { BrowserRouter as Router, Route } from 'react-router-dom'; //, Switch, Link, Redirect
 
 function App() {
+  
+  
   return (
-    <div className="row">
-      <div className="col-12 cont">
-        <div className="App mx-auto">
-          <header className="App-header">
-            Your todo list
-          </header>
-          <section  className="border rounded-0 shadow-lg mb-5 bg-white">
-            <TodoInput />
-            <Tasks />
-          </section>
-        </div>
-      </div>
-    </div>
+    <Router>
+      <Route exact path="/" component={Main} />
+      <Route exact path="/test" component={Testpage} />
+      {/* <Route component={Notfound} /> */}
+    </Router>
+    
   );
 }
 

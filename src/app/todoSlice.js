@@ -4,7 +4,7 @@ import axios from 'axios';
 export const initialState =
 {
   tasks: [],
-  mode: null
+  mode: Number(localStorage.getItem('mode')) || null
 }
 
 export const todoSlice = createSlice({

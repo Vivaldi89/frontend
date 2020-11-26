@@ -17,11 +17,20 @@ class Tasks extends React.Component {
     }
 
     syncDB() {
-      axios.get(`/todos`)
+      let config = {
+        headers: {
+          'todo-token': localStorage.getItem('token') || null,
+        }
+      }
+      axios.get(`/todos`, config)
         .then(res => {
           const tasks = res.data;
           this.props.getData(tasks);
         })
+    }
+
+    handleLogout() {
+      
     }
 
     componentDidMount = () => this.syncDB()
@@ -92,6 +101,7 @@ class Tasks extends React.Component {
             <i type='button' id="clear" onClick={()=> this.handleClearCompleted()}>{this.getCheckedCounter() ? 'Clear completed': null}</i>
           </div>
         </li>
+        
       </div>
     ) 
   }

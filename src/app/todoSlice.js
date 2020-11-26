@@ -53,14 +53,13 @@ export const todoSlice = createSlice({
     },
 
     markAsChecked: (state, action) => {
-      let config = {
-        headers: {
-          'todo-token': localStorage.getItem('token') || null,
-        }
-      }
       let id = action.payload[0];
       let checked = action.payload[1]
-      axios.put('/update/'+String(id)+'/'+String(checked), config)
+      axios.get('/update/'+String(id)+'/'+String(checked), {
+        headers: {
+          'todo-token': localStorage.getItem('token')
+        }
+      })
       let requiredIndex = state.tasks.findIndex(x => x.id === id)
       state.tasks[requiredIndex].checked = checked
       return state
@@ -84,11 +83,11 @@ export const todoSlice = createSlice({
         }
       }
       if (action.payload > 0) {
-        axios.put('/checkall', config)
+        axios.get('/checkall', config)
         state.tasks.forEach(el => el.checked = true)
       }
       else {
-        axios.put('/uncheckall', config)
+        axios.get('/uncheckall', config)
         state.tasks.forEach(el => el.checked = false)
       }
       return state

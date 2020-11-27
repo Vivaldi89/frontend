@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoInput from "./TodoInput";
 import Tasks from "./Items";
 import { useState } from 'react';
-import Login from './Login';
 
 function Main() {
   const [logout, setLogout] = useState(false)

@@ -3,6 +3,7 @@ import '../../styles/login.css';
 import  {Link} from 'react-router-dom';
 import Axios from 'axios';
 import Main from './Todoapp';
+import App from '../../App';
 
 class Login extends React.Component {
     constructor() {
@@ -30,7 +31,7 @@ class Login extends React.Component {
 
         if (this.state.login) {
             return (
-                <Main />
+                <App />
             )
         }
     return (

@@ -16,7 +16,7 @@ function Main() {
   }
   if (logout) {
     return (
-      <Login />
+      window.location.reload()
     )
   }
     return (

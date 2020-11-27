@@ -2,6 +2,8 @@ import React from 'react';
 import '../../styles/login.css';
 import  {Link, Redirect, withRouter } from 'react-router-dom';
 import Axios from 'axios';
+import Login from './Login';
+import Main from './Todoapp';
 
 class Register extends React.Component {
     constructor(){
@@ -30,7 +32,7 @@ class Register extends React.Component {
 
     render() {
         if(this.state.justreg !== 0) {
-            return <Redirect to="/login" />
+            return <Login />
              }
         return (
             <div>

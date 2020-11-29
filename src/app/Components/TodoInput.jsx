@@ -6,18 +6,18 @@ import { useState } from 'react';
 const mapDispatch = {add}
 
 const AddTodo = ({add}) => {
-  const [todoText, setTodoText] = useState('')
-  const onChange = e => setTodoText(e.target.value)
+  const [todoText, setTodoText] = useState('');
+  const onChange = e => setTodoText(e.target.value);
   return (
     <div>
       <form
         onSubmit={e => {
-          e.preventDefault()
+          e.preventDefault();
           if (!todoText.trim()) {
-            return
+            return;
           }
-          add(todoText)
-          setTodoText('')
+          add(todoText);
+          setTodoText('');
         }}
       >
         <input className="inp" placeholder="Enter your task name here" value={todoText} onChange={onChange} />
@@ -26,4 +26,4 @@ const AddTodo = ({add}) => {
   )
 }
 
-export default connect(null, mapDispatch)(AddTodo)
+export default connect(null, mapDispatch)(AddTodo);

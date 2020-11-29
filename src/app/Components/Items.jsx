@@ -3,23 +3,23 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed }  from '../todoSlice';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Input, Label } from 'reactstrap';
 
 class Tasks extends React.Component {
 
     getUncheckedCounter() {
-      return this.fetchData().filter((e) => e.checked === false).length
+      return this.fetchData().filter((e) => e.checked === false).length;
     }
 
     getCheckedCounter() {
-      return this.fetchData().filter((e) => e.checked === true).length
+      return this.fetchData().filter((e) => e.checked === true).length;
     }
 
     syncDB() {
       let config = {
         headers: {
-          'todo-token': localStorage.getItem('token') || null,
+          'todo-token': localStorage.getItem('token') || null
         }
       }
       axios.get(`/todos`, config)
@@ -29,14 +29,16 @@ class Tasks extends React.Component {
         })
     }
 
-    handleLogout() {
-      
-    }
-
     componentDidMount = () => this.syncDB()
 
-    getMode() { return localStorage.getItem('mode') }
-    fetchData() { return this.props.state.tasks }
+    getMode() { 
+      return localStorage.getItem('mode');
+    }
+
+    fetchData() { 
+      return this.props.state.tasks;
+    }
+
     handleMark = (id, check) => this.props.markAsChecked([id, check])
     handleRemove = (id) => this.props.remove(id)
     handleClearCompleted = () => this.props.clearCompleted()
@@ -47,21 +49,21 @@ class Tasks extends React.Component {
 
   
   render() {
-    let mode = this.props.state.mode || null
-    let posts
+    let mode = this.props.state.mode || null;
+    let posts;
     switch (mode) {
       case 1:
-        posts = this.fetchData().filter((e) => e.checked === false)
+        posts = this.fetchData().filter((e) => e.checked === false);
         break;
       case 2:
-        posts = this.fetchData().filter((e) => e.checked === true)
+        posts = this.fetchData().filter((e) => e.checked === true);
         break;
       default:
-        posts = this.fetchData()
+        posts = this.fetchData();
         break;
     }
     if (this.getCheckedCounter() === 0 && this.getUncheckedCounter() ===0) {
-      return null
+      return null;
     }
     
     return (

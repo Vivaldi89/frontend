@@ -20,6 +20,7 @@
 
 #task_left {
   margin-right: 80px;
+  min-width: 80px;
   border: none;
   background-color: white;
   font-size: 14px;
@@ -38,7 +39,7 @@
 }
 
 #btns {
-  margin-right: 100px;
+  margin-right: 90px;
 }
 
 #last_btn {
@@ -67,7 +68,7 @@
 } 
 
 #btn-gr {
-  margin-left: 10px;
+  margin-left: 5px;
   margin-bottom: 2px;
 }
 

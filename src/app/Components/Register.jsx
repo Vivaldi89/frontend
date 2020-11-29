@@ -17,21 +17,22 @@ class Register extends React.Component {
     
     async handleReg(e){
         e.preventDefault();
+        if (e.target.password.value.length < 4) {
+            this.setState({err: "Password must be at least 4 char long."}); 
+            return;
+        }
         try {
-            const resp = await Axios.post('/auth/register', {name: e.target.username.value , password: e.target.password.value, email: e.target.usermail.value})
-            .then(response => this.setState({ justreg: 1 })
-            // .catch(() => this.setState({ err: "Email already registered." }))
-            )
-            console.log(resp);
+            await Axios.post('/auth/register', {name: e.target.username.value , password: e.target.password.value, email: e.target.usermail.value});
+            this.setState({ justreg: 1 });
         }
         catch {
-            this.setState({err: "Email already registered."})
+            this.setState({err: "Email already registered."});
         }
     }
 
     render() {
         if(this.state.justreg !== 0) {
-            return <Login />
+            return <Login />;
              }
         return (
             <div>
@@ -45,7 +46,6 @@ class Register extends React.Component {
                 <input type="text" name="username" className="login-password" autoFocus={true} required={true} placeholder="Name" />
                 <input type="email" name="usermail" className="login-username" required={true} placeholder="Email" />
                 <input type="password" name="password" className="login-password" required={true} placeholder="Password" />
-                {/* <input type="password" name="repeat" className="login-password" required={true} placeholder="Repeat Password" /> */}
                 <p className="errorField">{this.state.err}</p>
                 <input type="submit" onSubmit={this.handleReg} name="Register" value="Register" className="login-submit" />
                 
@@ -57,4 +57,4 @@ class Register extends React.Component {
         )
 }}
 
-export default withRouter(Register)
+export default withRouter(Register);

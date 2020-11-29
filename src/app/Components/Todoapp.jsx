@@ -7,11 +7,11 @@ import Tasks from "./Items";
 import { useState } from 'react';
 
 function Main() {
-  const [logout, setLogout] = useState(false)
+  const [logout, setLogout] = useState(false);
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    setLogout(true)
+    localStorage.removeItem('token');
+    setLogout(true);
   }
   if (logout) {
     return (

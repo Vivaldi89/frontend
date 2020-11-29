@@ -13,15 +13,9 @@ export const todoSlice = createSlice({
   initialState,
   
   reducers: {
-
-    logout: (state, action) => {
-      localStorage.removeItem('token')
-      state.tasks = []
-      return state
-    },
     
     add: (state, action) => {
-      let x = Math.round(Math.random()*10000000000)
+      let x = Math.round(Math.random()*10000000000);
       let obj = {
         id: x,  
         text: action.payload,
@@ -32,12 +26,14 @@ export const todoSlice = createSlice({
           'todo-token': localStorage.getItem('token') || null,
         }
       }
-      if (!localStorage.getItem('mode')) {localStorage.setItem('mode', 0)}
+      if (!localStorage.getItem('mode')) {
+        localStorage.setItem('mode', 0);
+      }
       if (state.tasks.findIndex(el => el.text === obj.text) === -1){
         axios.post('/add', {id: obj.id, text: obj.text, checked: obj.checked}, config)
-        state.tasks.push(obj)
+        return { ...state, tasks: [...state.tasks, obj] }
       }
-      return state
+      return state;
     },
 
     remove: (state, action) => {
@@ -47,22 +43,27 @@ export const todoSlice = createSlice({
         }
       }
       let id = action.payload; 
-      axios.delete('/del/' + String(id), config)
-      state.tasks = state.tasks.filter((item) => item.id !== id)
-      return state
+      axios.delete('/del/' + String(id), config);
+      return { 
+        ...state, 
+        tasks: state.tasks.filter((item) => item.id !== id) 
+      }
     },
 
     markAsChecked: (state, action) => {
       let id = action.payload[0];
       let checked = action.payload[1]
-      axios.get('/update/'+String(id)+'/'+String(checked), {
+      axios.put('/update/'+String(id)+'/'+String(checked), {}, {
         headers: {
-          'todo-token': localStorage.getItem('token')
+          'todo-token': localStorage.getItem('token'),
         }
       })
       let requiredIndex = state.tasks.findIndex(x => x.id === id)
-      state.tasks[requiredIndex].checked = checked
-      return state
+      return {...state, tasks: [
+        ...state.tasks.slice(0, requiredIndex),
+        { id: id, text: state.tasks[requiredIndex].text, checked: checked},
+        ...state.tasks.slice(requiredIndex+1)
+      ]}
     },
 
     clearCompleted: state => {
@@ -71,9 +72,11 @@ export const todoSlice = createSlice({
           'todo-token': localStorage.getItem('token') || null,
         }
       }
-      axios.delete('/delcompleted', config)
-      state.tasks = state.tasks.filter((el) => el.checked === false)
-      return state
+      axios.delete('/delcompleted', config);
+      return {
+        ...state, 
+        tasks: state.tasks.filter((el) => el.checked === false)
+      }
     },
 
     checkAll: (state, action) => {
@@ -83,44 +86,53 @@ export const todoSlice = createSlice({
         }
       }
       if (action.payload > 0) {
-        axios.get('/checkall', config)
-        state.tasks.forEach(el => el.checked = true)
+        axios.put('/checkall', {}, config)
+         return { 
+           ...state, 
+           tasks: [...state.tasks.map(( item, index ) => {
+              return  { 
+                ...item, 
+                checked: true
+              }
+         })]}
       }
       else {
-        axios.get('/uncheckall', config)
-        state.tasks.forEach(el => el.checked = false)
+        axios.put('/uncheckall', {}, config)
+        return { 
+          ...state, 
+          tasks: state.tasks.map(task => {
+            return { 
+              ...task, 
+              checked: false 
+            }
+       })}
       }
-      return state
     },
 
     all: state => {
       localStorage.setItem('mode', 0)
-      state.mode = 0
-      return state
+      return { ...state, mode: 0 }
     },
 
     todo: state => {
       localStorage.setItem('mode', 1)
-      state.mode = 1
-      return state
+      return { ...state, mode: 1 }
     },
 
     completed: state => {
       localStorage.setItem('mode', 2)
-      state.mode = 2
-      return state
+      return { ...state, mode: 2 }
     },
     
     getData: (state, action) => {
       const x = action.payload
-      state.tasks = x
-      return state
+      return { ...state, tasks: x }
     },
     
     
   }
 });
 
-export const { loginRender, getData, add, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed } = todoSlice.actions;
+export const { getData, add, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed } = todoSlice.actions;
 
 export default todoSlice.reducer;

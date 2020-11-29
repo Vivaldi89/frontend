@@ -9,21 +9,32 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 function App() {
   const aut = localStorage.getItem('token') || null
-  let start 
-    if (aut) start = Main 
-    else start = Login
-
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={start} />
-        <Route exact path="/" component={start} />
-        <Route exact path="/404" component={Notfound} />
-        <Redirect to="/404" />
-      </Switch>
-    </Router>
-  )
+    if (aut) {
+      return (
+        <Router>
+          <Switch>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/home" component={Main} />
+            <Route exact path="/404" component={Notfound} />
+            <Redirect from="/login" to="/home" />
+            <Redirect from="/" to="/home" />
+            <Redirect to="/404" />
+          </Switch>
+        </Router>
+      )
+    }
+    else {
+      return (
+        <Router>
+          <Switch>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/404" component={Notfound} />
+            <Redirect from="/" to="/login" />
+            <Redirect to="/404" />
+          </Switch>
+        </Router>
+  )}
 }
   
  

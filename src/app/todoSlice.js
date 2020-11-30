@@ -4,8 +4,7 @@ import axios from 'axios';
 export const initialState =
 {
   tasks: [],
-  mode: Number(localStorage.getItem('mode')) || null,
-  refresher: 0
+  mode: Number(localStorage.getItem('mode')) || null
 }
 
 export const todoSlice = createSlice({
@@ -30,7 +29,7 @@ export const todoSlice = createSlice({
         localStorage.setItem('mode', 0);
       }
       if (state.tasks.findIndex(el => el.text === obj.text) === -1){
-        axios.post('/add', {id: obj.id, text: obj.text, checked: obj.checked}, config)
+        axios.post('/api/add', {id: obj.id, text: obj.text, checked: obj.checked}, config)
         return { ...state, tasks: [...state.tasks, obj] }
       }
       return state;
@@ -43,7 +42,7 @@ export const todoSlice = createSlice({
         }
       }
       let id = action.payload; 
-      axios.delete('/del/' + String(id), config);
+      axios.delete('/api/del/' + String(id), config);
       return { 
         ...state, 
         tasks: state.tasks.filter((item) => item.id !== id) 
@@ -53,7 +52,7 @@ export const todoSlice = createSlice({
     markAsChecked: (state, action) => {
       let id = action.payload[0];
       let checked = action.payload[1]
-      axios.put('/update/'+String(id)+'/'+String(checked), {}, {
+      axios.put('/api/update/'+String(id)+'/'+String(checked), {}, {
         headers: {
           'todo-token': localStorage.getItem('token'),
         }
@@ -72,7 +71,7 @@ export const todoSlice = createSlice({
           'todo-token': localStorage.getItem('token') || null,
         }
       }
-      axios.delete('/delcompleted', config);
+      axios.delete('/api/delcompleted', config);
       return {
         ...state, 
         tasks: state.tasks.filter((el) => el.checked === false)
@@ -86,7 +85,7 @@ export const todoSlice = createSlice({
         }
       }
       if (action.payload > 0) {
-        axios.put('/checkall', {}, config)
+        axios.put('/api/checkall', {}, config)
          return { 
            ...state, 
            tasks: [...state.tasks.map(( item, index ) => {
@@ -97,7 +96,7 @@ export const todoSlice = createSlice({
          })]}
       }
       else {
-        axios.put('/uncheckall', {}, config)
+        axios.put('/api/uncheckall', {}, config)
         return { 
           ...state, 
           tasks: state.tasks.map(task => {

@@ -5,8 +5,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { getData, remove, markAsChecked, checkAll, clearCompleted, all, todo, completed }  from '../todoSlice';
 import { connect } from 'react-redux';
 import { Input, Label } from 'reactstrap';
+import { Redirect } from 'react-router';
 
 class Tasks extends React.Component {
+    state = {
+      tcheck: false
+    }
 
     getUncheckedCounter() {
       return this.fetchData().filter((e) => e.checked === false).length;
@@ -22,14 +26,16 @@ class Tasks extends React.Component {
           'todo-token': localStorage.getItem('token') || null
         }
       }
-      axios.get(`/todos`, config)
+      axios.get(`/api/todos`, config)
         .then(res => {
           const tasks = res.data;
           this.props.getData(tasks);
         })
     }
 
-    componentDidMount = () => this.syncDB()
+    componentDidMount = () => {
+      this.syncDB();
+    }
 
     getMode() { 
       return localStorage.getItem('mode');
@@ -49,8 +55,14 @@ class Tasks extends React.Component {
 
   
   render() {
+
+    if (!localStorage.getItem('token')) {
+      return <Redirect to="/login" />;
+    } 
+    
     let mode = this.props.state.mode || null;
     let posts;
+
     switch (mode) {
       case 1:
         posts = this.fetchData().filter((e) => e.checked === false);

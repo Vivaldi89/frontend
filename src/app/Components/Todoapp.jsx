@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import TodoInput from "./TodoInput";
 import Tasks from "./Items";
 import { useState } from 'react';
+import { Redirect } from 'react-router';
 
 function Main() {
   const [logout, setLogout] = useState(false);
@@ -15,7 +16,7 @@ function Main() {
   }
   if (logout) {
     return (
-      window.location.reload()
+      <Redirect to="/login" />
     )
   }
     return (

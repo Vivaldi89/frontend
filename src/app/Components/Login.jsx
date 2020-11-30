@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../styles/login.css';
-import  {Link} from 'react-router-dom';
+import  {Link, Redirect} from 'react-router-dom';
 import Axios from 'axios';
 
 class Login extends React.Component {
@@ -22,6 +22,7 @@ class Login extends React.Component {
                 email: e.target.usermail.value 
             });
             localStorage.setItem('token', resp.data);
+            
             this.setState({ login: true });
         } catch (error) {
             this.setState({ errmsg: "Incorrect email or password" });
@@ -32,7 +33,7 @@ class Login extends React.Component {
 
         if (this.state.login) {
             return (
-                window.location.reload()
+                <Redirect to="/" />
             )
         }
 
